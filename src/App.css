@@ -1,0 +1,89 @@
+
+*{
+    padding: 0px;
+	margin: 0px;
+    border: none;
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    
+}
+
+.blocktodo{
+    padding: 10px;
+}
+
+.seasrch{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 38px;
+    gap: 16px;
+    justify-content: center;
+
+}
+
+.searchblocks{
+    border: 1px solid rgba(108, 99, 255, 1);
+    padding: 8px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 15px;
+}
+
+.sreachvalue::placeholder{
+    color: rgba(195, 193, 229, 1);
+}
+
+
+.sreachvalue{
+    width: 100%;
+    outline:none;
+    color: rgb(142, 138, 214);
+}
+
+.searchbutton{
+    background-color: rgba(240, 248, 255, 0);
+}
+
+
+.buttons{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.sorttitel{
+    width: 200px;
+    height: 20px;
+    background-color: rgba(108, 99, 255, 1);
+    border-radius: 10px;
+    text-align: center;
+    color: aliceblue;
+    font-size: 20px;
+    padding: 10px 0px;
+}
+
+.chanchetheme{
+    width: 200px;
+    height: 38px;
+    background-color: rgba(108, 99, 255, 1);
+    border-radius: 10px;
+}
+
+.sortspisoc{
+    /* visibility: hidden;
+    opacity: 0; */
+    width: 175px;
+    position: absolute;
+    color: black;
+    border: 2px solid rebeccapurple;
+    top: 178px;
+    border-radius: 10px;
+    display: block;
+    gap: 10px;
+}
