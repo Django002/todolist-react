@@ -1,0 +1,98 @@
+@font-face {
+    font-family: 'Gabriela-Regular.ttf';
+    src: url('./fonts/шрифты/Gabriela-Regular.ttf');
+}
+
+
+.back{
+    position: absolute;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.493);
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition: 1s;
+}
+
+.open{
+    visibility: visible;
+    opacity: 1;
+    transition: 1s ease;
+}
+
+.zagalovoc{
+    font-size: 24px;
+}
+
+.modalcontent{
+    background-color: rgb(255, 255, 255);
+    width: 300px;
+    height: 250px;
+    margin: 250px auto;
+    padding: 20px;
+    border-radius: 30px;
+}
+
+.valuetitel{
+    width: 290px;
+    height: 20px;
+    border: 1px solid rgba(108, 99, 255, 1);
+    padding: 5px;
+    border-radius: 5px;
+    outline:none;
+    color:rgb(142, 138, 214);
+}
+
+.valuetitel:focus{
+    box-shadow: -2px 2px 30px -5px rgba(108, 99, 255, 1);
+    transition: 1s ease;
+}
+
+.valuetitel::placeholder{
+    color: rgba(195, 193, 229, 1);
+}
+
+.modalcontentbuttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 110px;
+}
+
+.buttonscansel{
+    width: 100px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgba(108, 99, 255, 1);
+    border-radius: 10px;
+    color: rgba(108, 99, 255, 1);
+    font-size: 17px;
+    font-family: 'Gabriela-Regular.ttf' ;
+    font-weight: 700;
+}
+
+.buttonsadd{
+    width: 100px;
+    height: 40px;
+    background-color: rgba(108, 99, 255, 1);
+    border: 1px solid rgba(108, 99, 255, 1);
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 17px;
+    font-family: 'Gabriela-Regular.ttf' ;
+    font-weight: 700;
+}
+
+
+
+.buttonscansel:focus{
+    background-color: rgba(108, 99, 255, 1);
+    color: rgb(255, 255, 255);
+    transition: 0.3s ease;
+}
+
+.buttonsadd:focus{
+    background-color: rgb(255, 255, 255);
+    color: rgba(108, 99, 255, 1);
+    transition: 0.3s ease;
+}
