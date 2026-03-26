@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect,useState } from 'react'
 import './App.css'
 import Vector from './assets/Vector.svg'
 import moon from './assets/Vector (1).svg'
@@ -9,43 +9,73 @@ import Modaladd from './components/modaladd'
 function App() {
   const [todoitem, setTodoitem] = useState([])
 
-    
   const [searchitem, setSearchitem] = useState('')
   const [filter, setFilter] = useState('all')
   const [inputValue, setInputValue] = useState('');
   const [openfiltertitel, setOpenfiltertitel] = useState(false)
   const [openmodal, setOpenmodal] = useState(false)
+  const [buttonmore, setButtonmore] = useState(true)
+  const [zadacha, setZadacha] = useState(5)
 
+  useEffect(() => {
+    const loaddate = async () => {
+        try {
+        const getdate = await fetch('http://localhost:3000/tasks');
+        const data = await getdate.json()
+        setTodoitem(data)
+      } catch (error) {
+        console.log(error)
+      }
 
-  const addtodo = () => {
-    if (inputValue.trim() !== '') {
-      const newTodo = {
-        id: Date.now(),
-        text: inputValue,
-        completed: false,
-      } 
-    
-
-      setTodoitem([...todoitem, newTodo])
-      setInputValue('');
-      setOpenmodal(false)
     }
+
+    loaddate();
+  },[])
+
+  const addzadacha = ()=> {
+    setZadacha(zadacha+todoitem.length)
+    setButtonmore(!buttonmore)
   }
 
-  // useEffect(() => {
-  //   const loaddate = async () => {
-  //       try {
-  //       const getdate = await fetch('');
-  //       const data = await getdate.json()
-  //       setTodoitem(data)
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
+  const delzadacha = ()=> {
+    setZadacha(5)
+    setButtonmore(!buttonmore)
+  }
 
-  //   }
 
-  //   loaddate();
-  // },[])
+  const addtodo = async () => {
+    if (!inputValue.trim()) return;
+
+      const tempId = Date.now();
+      const newTodo = {
+        id: tempId,
+        text: inputValue,
+        completed: false,
+      };
+
+      
+      try {
+        const addtitel = await fetch('http://localhost:3000/tasks',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newTodo)
+        });
+
+        const savedTodo = await addtitel.json();
+        setTodoitem([...todoitem, savedTodo])
+        setInputValue('');
+        setOpenmodal(false)
+        
+      } catch (error) {
+        console.error('Failed to add todo:', error);
+        setTodoitem(prev => prev.filter(todo => todo.id !== tempId));
+      }
+
+    
+  }
+
 
   const openfilt = () => {
     setOpenfiltertitel(!openfiltertitel)
@@ -57,13 +87,41 @@ function App() {
     return true;
   })
 
-  const delet = (id) => {
-    setTodoitem(todos => todos.filter(item => item.id !== id))
+  const delet = async (id) => {
+    try {
+      await fetch(`http://localhost:3000/tasks/${id}`, {
+        method: 'DELETE',
+      })
+      
+      setTodoitem(todos => todos.filter(item => item.id !== id))
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
-const done = (id) => {
-  setTodoitem(todoitem.map(item => item.id === id ? {...item, completed: !item.completed} : item))
-  console.log('done')
+const done = async (id,completed) => {
+  try {
+    const response = await fetch(`http://localhost:3000/tasks/${id}`,{
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json'
+        },
+      body: JSON.stringify({completed: !completed})
+    })
+
+    if (!response.ok) {
+      throw new Error(`Ошибка HTTP: ${response.status}`);
+    }
+    const update = await response.json()
+    setTodoitem(prev => prev.map(item =>
+  item.id === id ? { ...item, completed: update.completed } : item
+));
+  } catch (error) {
+    console.log(error.message);
+  }
+
+
 }
   
 
@@ -94,12 +152,12 @@ const done = (id) => {
                 <img src={imgdefolt} alt="" srcset="" />
               </div>
             ) : (
-                filtertitel.slice(0,7).map(titel => (
+                filtertitel.slice(0,zadacha).map(titel => (
                   <li key={titel.id}>
-                    <div className = {`checkbox ${titel.completed ? 'don' : ''}`}   onClick={() => done(titel.id)}/>
+                    <div className = {`checkbox ${titel.completed ? 'don' : ''}`}   onClick={() => done(titel.id,titel.completed)}/>
                     <div className='block'>
                       <div className='content'>
-                        <span className={`content__text ${titel.completed ? 'done' : ''}`} onClick={() => done(titel.id)}>{titel.text}</span>
+                        <span className={`content__text ${titel.completed ? 'done' : ''}`} onClick={() => done(titel.id,titel.completed)}>{titel.text}</span>
                         <span className='content__date'>{titel.dateadd}</span>
                       </div>
                       <button className='buttondelet' onClick={() => delet(titel.id)}>x</button>
@@ -108,9 +166,15 @@ const done = (id) => {
                 ))
             )}
         </ul>
-      </div>
 
-      <button className='buttonadd' onClick={() => setOpenmodal(!openmodal,console.log(openmodal))}>+</button>
+        {filtertitel.length > zadacha && (<button className="load" onClick={addzadacha}> ещё</button>)}
+        {zadacha > 5 && (<button className="load" onClick={delzadacha}>назад</button>)}
+
+        
+      </div>
+      {buttonmore && <button className='buttonadd' onClick={() => setOpenmodal(!openmodal,console.log(openmodal))}>+</button>}
+            
+      
       <Modaladd open={openmodal} setOpenmodal={setOpenmodal} add={addtodo} inputValue={inputValue} setInputValue={setInputValue} />
       
     </>

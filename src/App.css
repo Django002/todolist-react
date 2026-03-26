@@ -20,6 +20,7 @@ h1{
 
 .blocktodo{
     padding: 10px;
+    height: 100%;
 }
 
 .seasrch{
@@ -103,6 +104,7 @@ h1{
     gap: 10px;
     transition: 1s ease;
     z-index: 100;
+    list-style-type: none
 }
 
 .open{
@@ -115,7 +117,7 @@ h1{
     /* border: 2px solid red; */
     margin-top: 100px;
     width: 100%;
-    height: 450px;
+   height: 100%;
 }
 
 .todosnav li{
@@ -142,8 +144,8 @@ h1{
     font-size: 40px;
     border-radius: 50%;
     color: aliceblue;
-    margin-left: 300px;
-    margin-top: 30px;
+    margin-left: 290px;
+    margin-top: 130px;
 }
 
 .block{
@@ -220,4 +222,40 @@ h1{
     visibility: visible;
     opacity: 1;
     transition: 1s ease;
+}
+
+
+.blocktodo{
+    width: 370px;
+    margin: auto;
+}
+
+
+.load{
+    width: 300px;
+    height: 50px;
+    margin: auto;
+    border: 2px solid rgba(108, 99, 255, 1);
+    background-color: rgb(255, 255, 255);
+    color: rgba(108, 99, 255, 1);
+    font-size: 30px;
+    padding: 5px;
+    margin-left: 35px;
+    font-family: 'Gabriela-Regular.ttf' ;
+    font-weight: 400;
+    visibility: visible;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+.load:focus{
+    border: 2px solid rgba(108, 99, 255, 1);
+    background-color: rgba(108, 99, 255, 1);
+    color: rgb(255, 255, 255);
+  transition: 1s ease;
+}
+
+.morebuttonhidn{
+    visibility: hidden;
+    opacity: 0;
 }

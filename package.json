@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "json-server db.json5 --watch --port 3000",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "npm run dev"
-    
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -24,6 +24,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "json-server": "^1.0.0-beta.15",
     "vite": "^6.2.6"
   },
   "overrides": {
