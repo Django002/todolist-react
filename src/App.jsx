@@ -43,7 +43,8 @@ function App() {
   }
 
 
-  const addtodo = async () => {
+  const addtodo = async (e) => {
+    e.preventDefault()
     if (!inputValue.trim()) return;
 
       const tempId = Date.now();
@@ -52,6 +53,10 @@ function App() {
         text: inputValue,
         completed: false,
       };
+
+      setTodoitem([...todoitem, newTodo]);
+      setInputValue('');
+      setOpenmodal(false);
 
       
       try {
@@ -88,6 +93,9 @@ function App() {
   })
 
   const delet = async (id) => {
+
+    setTodoitem(todos => todos.filter(item => item.id !== id))
+
     try {
       await fetch(`http://localhost:3000/tasks/${id}`, {
         method: 'DELETE',
@@ -101,6 +109,11 @@ function App() {
   }
 
 const done = async (id,completed) => {
+
+
+  setTodoitem(prev => prev.map(item =>
+  item.id === id ? { ...item, completed: !item.completed } : item));
+
   try {
     const response = await fetch(`http://localhost:3000/tasks/${id}`,{
       method: 'PATCH',
