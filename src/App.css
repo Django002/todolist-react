@@ -23,6 +23,11 @@ h1{
     height: 100%;
 }
 
+.allblock{
+    width: 400px;
+    margin: 300px auto;
+}
+
 .seasrch{
     display: flex;
     flex-wrap: wrap;
@@ -227,6 +232,7 @@ h1{
 
 .blocktodo{
     width: 370px;
+    height: 600px;
     margin: auto;
 }
 
@@ -234,7 +240,6 @@ h1{
 .load{
     width: 300px;
     height: 50px;
-    margin: auto;
     border: 2px solid rgba(108, 99, 255, 1);
     background-color: rgb(255, 255, 255);
     color: rgba(108, 99, 255, 1);
@@ -245,17 +250,26 @@ h1{
     font-weight: 400;
     visibility: visible;
     opacity: 1;
-    margin-top: 10px;
+    margin-top: 40px;
 }
 
 .load:focus{
     border: 2px solid rgba(108, 99, 255, 1);
     background-color: rgba(108, 99, 255, 1);
     color: rgb(255, 255, 255);
-  transition: 1s ease;
+    transition: 1s ease;
 }
 
 .morebuttonhidn{
     visibility: hidden;
     opacity: 0;
+}
+
+@media (max-width: 400px) {
+    
+    .allblock{
+        width: 390px;
+        height: 100%;
+        margin: 0px;
+    }
 }

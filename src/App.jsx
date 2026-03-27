@@ -4,11 +4,11 @@ import Vector from './assets/Vector.svg'
 import moon from './assets/Vector (1).svg'
 import imgdefolt from './assets/Detective-check-footprint 1.svg'
 import Modaladd from './components/modaladd'
+import Load from './components/loader/load'
 
 
 function App() {
   const [todoitem, setTodoitem] = useState([])
-
   const [searchitem, setSearchitem] = useState('')
   const [filter, setFilter] = useState('all')
   const [inputValue, setInputValue] = useState('');
@@ -16,9 +16,15 @@ function App() {
   const [openmodal, setOpenmodal] = useState(false)
   const [buttonmore, setButtonmore] = useState(true)
   const [zadacha, setZadacha] = useState(5)
+  const [loader, setLoader] = useState(false)
 
   useEffect(() => {
     const loaddate = async () => {
+
+      let isMounted = true;          // флаг, чтобы не обновлять состояние после размонтирования
+      let timeoutId = null;
+
+      setLoader(true)
         try {
         const getdate = await fetch('http://localhost:3000/tasks');
         const data = await getdate.json()
@@ -26,11 +32,25 @@ function App() {
       } catch (error) {
         console.log(error)
       }
+      finally{
+        if (isMounted) {
+          setTimeout(()=>setLoader(false),2000)
+        }
+        
+      }
+        return () => {
+      isMounted = false;
+      if (timeoutId) clearTimeout(timeoutId);
+      };
 
     }
 
     loaddate();
+
+    
   },[])
+
+  if (loader) return <Load />
 
   const addzadacha = ()=> {
     setZadacha(zadacha+todoitem.length)
@@ -44,7 +64,7 @@ function App() {
 
 
   const addtodo = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!inputValue.trim()) return;
 
       const tempId = Date.now();
@@ -53,10 +73,6 @@ function App() {
         text: inputValue,
         completed: false,
       };
-
-      setTodoitem([...todoitem, newTodo]);
-      setInputValue('');
-      setOpenmodal(false);
 
       
       try {
@@ -93,9 +109,6 @@ function App() {
   })
 
   const delet = async (id) => {
-
-    setTodoitem(todos => todos.filter(item => item.id !== id))
-
     try {
       await fetch(`http://localhost:3000/tasks/${id}`, {
         method: 'DELETE',
@@ -109,11 +122,6 @@ function App() {
   }
 
 const done = async (id,completed) => {
-
-
-  setTodoitem(prev => prev.map(item =>
-  item.id === id ? { ...item, completed: !item.completed } : item));
-
   try {
     const response = await fetch(`http://localhost:3000/tasks/${id}`,{
       method: 'PATCH',
@@ -140,7 +148,8 @@ const done = async (id,completed) => {
 
   return (
     <>
-      <div className='blocktodo'>
+    <div className='allblock'>
+        <div className='blocktodo'>
         <h1>Todo Item</h1>
         <div className='seasrch'> 
           <div className='searchblocks'> 
@@ -178,17 +187,21 @@ const done = async (id,completed) => {
                   </li>
                 ))
             )}
-        </ul>
-
         {filtertitel.length > zadacha && (<button className="load" onClick={addzadacha}> ещё</button>)}
         {zadacha > 5 && (<button className="load" onClick={delzadacha}>назад</button>)}
+        </ul>
+
+        
 
         
       </div>
       {buttonmore && <button className='buttonadd' onClick={() => setOpenmodal(!openmodal,console.log(openmodal))}>+</button>}
             
       
-      <Modaladd open={openmodal} setOpenmodal={setOpenmodal} add={addtodo} inputValue={inputValue} setInputValue={setInputValue} />
+      
+    </div>
+    <Modaladd open={openmodal} setOpenmodal={setOpenmodal} add={addtodo} inputValue={inputValue} setInputValue={setInputValue} />
+      
       
     </>
   )
