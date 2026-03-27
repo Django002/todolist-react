@@ -18,50 +18,36 @@ function App() {
   const [zadacha, setZadacha] = useState(5)
   const [loader, setLoader] = useState(false)
 
-  const savelocal = (tasc) => {
-    localStorage.setItem('todos_task', JSON.stringify(tasc))
-  }
 
   useEffect(() => {
     const loaddate = async () => {
-      const localTasks = savelocal()
-      if (localTasks && isMounted) {
-        setTodoitem(localTasks)
-      }
+     
 
-      let isMounted = true;         
-      let timeoutId = null;
+      let isMounted = true;  
+      const locadate = localStorage.getItem('titel')
+      setTodoitem(JSON.parse(locadate))       
 
       setLoader(true)
         try {
         const getdate = await fetch('http://localhost:3000/tasks');
         const data = await getdate.json()
         setTodoitem(data)
-        savelocal(data)
       } catch (error) {
         console.log(error)
       }
       finally{
         if (isMounted) {
           setTimeout(()=>setLoader(false),2000)
-        }
-        
+        } 
       }
-        return () => {
-      isMounted = false;
-      if (timeoutId) clearTimeout(timeoutId);
-      };
-
+        
     }
-
     loaddate();
-
-    
   },[])
 
-    useEffect(()=>{if (todoitem.length > 0 || savelocal() !== null) {
-      savelocal(todoitem)
-    }},[todoitem])
+
+  useEffect(() => localStorage.setItem('titel',JSON.stringify(todoitem)),[todoitem]);
+    
 
   if (loader) return <Load />
 
