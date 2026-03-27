@@ -8,6 +8,7 @@
     padding: 0px;
 	margin: 0px;
     border: none;
+    
 }
 
 h1{
@@ -18,6 +19,7 @@ h1{
     font-weight: 700;
 }
 
+
 .blocktodo{
     padding: 10px;
     height: 100%;
@@ -25,7 +27,8 @@ h1{
 
 .allblock{
     width: 400px;
-    margin: 300px auto;
+    height: 100%;
+    margin: 200px auto;
 }
 
 .seasrch{
@@ -265,11 +268,11 @@ h1{
     opacity: 0;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 600px) {
     
     .allblock{
         width: 390px;
         height: 100%;
-        margin: 0px;
+        margin: 0px auto;
     }
 }

@@ -19,6 +19,7 @@
     visibility: visible;
     opacity: 1;
     transition: 1s ease;
+    height: 100%;
 }
 
 .zagalovoc{
@@ -29,7 +30,7 @@
     background-color: rgb(255, 255, 255);
     width: 300px;
     height: 250px;
-    margin: 250px auto;
+    margin: 350px auto;
     padding: 20px;
     border-radius: 30px;
 }

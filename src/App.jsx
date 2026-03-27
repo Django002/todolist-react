@@ -18,10 +18,18 @@ function App() {
   const [zadacha, setZadacha] = useState(5)
   const [loader, setLoader] = useState(false)
 
+  const savelocal = (tasc) => {
+    localStorage.setItem('todos_task', JSON.stringify(tasc))
+  }
+
   useEffect(() => {
     const loaddate = async () => {
+      const localTasks = savelocal()
+      if (localTasks && isMounted) {
+        setTodoitem(localTasks)
+      }
 
-      let isMounted = true;          // флаг, чтобы не обновлять состояние после размонтирования
+      let isMounted = true;         
       let timeoutId = null;
 
       setLoader(true)
@@ -29,6 +37,7 @@ function App() {
         const getdate = await fetch('http://localhost:3000/tasks');
         const data = await getdate.json()
         setTodoitem(data)
+        savelocal(data)
       } catch (error) {
         console.log(error)
       }
@@ -50,6 +59,10 @@ function App() {
     
   },[])
 
+    useEffect(()=>{if (todoitem.length > 0 || savelocal() !== null) {
+      savelocal(todoitem)
+    }},[todoitem])
+
   if (loader) return <Load />
 
   const addzadacha = ()=> {
@@ -61,6 +74,7 @@ function App() {
     setZadacha(5)
     setButtonmore(!buttonmore)
   }
+
 
 
   const addtodo = async (e) => {
@@ -121,29 +135,27 @@ function App() {
 
   }
 
-const done = async (id,completed) => {
-  try {
-    const response = await fetch(`http://localhost:3000/tasks/${id}`,{
-      method: 'PATCH',
-      headers: {
-          'Content-Type': 'application/json'
-        },
-      body: JSON.stringify({completed: !completed})
-    })
+  const done = async (id,completed) => {
+    try {
+      const response = await fetch(`http://localhost:3000/tasks/${id}`,{
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({completed: !completed})
+      })
 
-    if (!response.ok) {
-      throw new Error(`Ошибка HTTP: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Ошибка HTTP: ${response.status}`);
+      }
+      const update = await response.json()
+      setTodoitem(prev => prev.map(item =>
+    item.id === id ? { ...item, completed: update.completed } : item
+  ));
+    } catch (error) {
+      console.log(error.message);
     }
-    const update = await response.json()
-    setTodoitem(prev => prev.map(item =>
-  item.id === id ? { ...item, completed: update.completed } : item
-));
-  } catch (error) {
-    console.log(error.message);
   }
-
-
-}
   
 
   return (
@@ -187,23 +199,19 @@ const done = async (id,completed) => {
                   </li>
                 ))
             )}
-        {filtertitel.length > zadacha && (<button className="load" onClick={addzadacha}> ещё</button>)}
-        {zadacha > 5 && (<button className="load" onClick={delzadacha}>назад</button>)}
+          {filtertitel.length > zadacha && (<button className="load" onClick={addzadacha}> ещё</button>)}
+          {zadacha > 5 && (<button className="load" onClick={delzadacha}>назад</button>)}
         </ul>
-
-        
-
         
       </div>
       {buttonmore && <button className='buttonadd' onClick={() => setOpenmodal(!openmodal,console.log(openmodal))}>+</button>}
-            
-      
-      
+     
     </div>
-    <Modaladd open={openmodal} setOpenmodal={setOpenmodal} add={addtodo} inputValue={inputValue} setInputValue={setInputValue} />
-      
+    
+      <Modaladd open={openmodal} setOpenmodal={setOpenmodal} add={addtodo} inputValue={inputValue} setInputValue={setInputValue} />
       
     </>
+    
   )
 }
 
