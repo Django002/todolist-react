@@ -2,7 +2,7 @@ import '../components/stylemodal.css'
 
 function Modaladd({open,setOpenmodal,add,inputValue,setInputValue}) {
    return(
-        <div className={`back ${open ? 'open' : ''}`}>
+        <div className={`back ${open ? 'modalopen' : ''}`}>
             <div className='modalcontent'>
                 <h1 className='zagalovoc'>Добавить задачу</h1>
                 <input className='valuetitel' 

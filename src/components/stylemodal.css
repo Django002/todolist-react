@@ -15,7 +15,7 @@
     transition: 1s;
 }
 
-.open{
+.modalopen{
     visibility: visible;
     opacity: 1;
     transition: 1s ease;
